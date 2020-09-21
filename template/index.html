@@ -1,0 +1,106 @@
+<html>
+    <head>
+        <title>To Do App | Index</title>
+        <meta name = "viewport" content = "width = device-width, initial-scale = 1">      
+        <!-- CDN for Bootstrap framework starts -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+        <!-- jQuery library -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <!-- Popper JS -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <!-- Latest compiled JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <!-- CDN for Bootstrap framework ends -->
+        
+        <script>
+            function date_time(id)
+            {
+                date = new Date;
+                year = date.getFullYear();
+                month = date.getMonth();
+                months = new Array('January', 'February', 'March', 'April', 'May', 'June', 'Jully', 'August', 'September', 'October', 'November', 'December');
+                d = date.getDate();
+                day = date.getDay();
+                days = new Array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');
+                h = date.getHours();
+                if(h<10)
+                {
+                        h = "0"+h;
+                }
+                m = date.getMinutes();
+                if(m<10)
+                {
+                        m = "0"+m;
+                }
+                s = date.getSeconds();
+                if(s<10)
+                {
+                        s = "0"+s;
+                }
+                result = ''+days[day]+' '+months[month]+' '+d+' '+year+' '+h+':'+m+':'+s;
+                document.getElementById(id).innerHTML = result;
+                setTimeout('date_time("'+id+'");','1000');
+                return true;
+            }
+        </script>
+        
+    </head>
+    <body>
+        <!-- Navbar starts -->
+        <div class="container-fluid bg-primary">
+            <nav class="navbar navbar-expand-md bg-primary navbar-dark" id="bg">
+                <!-- Brand -->
+                <a class="navbar-brand" href="#">To Do App</a>
+
+                <!-- Toggler/collapsibe Button -->
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Navbar links -->
+                <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <b><span style="color: white;" id="date_time"></span></b>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+        <!-- Navbar ends -->
+        
+        <div class="container">
+            <h2 class="mt-4">Add Item.</h2>
+            <div class="row mt-4">
+                <div class="col">
+                    <form class="form-inline" action="{% url 'to%do' %}" method="post">
+                        
+                        <input type="text" class="form-control mb-2 mr-sm-2" placeholder="Type your task here..." name="task" />
+                        <button type="submit" class="btn btn-primary mb-2">Submit</button>
+                    </form>
+                </div>
+            </div>
+            
+            <h2 class="mt-4">Task List</h2>
+            <div class="row mt-4">
+                <div class="col">
+                    <ul class="list-group">
+                        {% for item in todo_items %}
+                            <li class="list-group-item">{{ item.todo_text }}
+                                <div class="float-right">
+                                    <form action="delete_todo/{{item.id}}" method="post">
+                                        <button class="btn btn-sm btn-danger">Delete</button>
+                                    </form>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        
+        <script type="text/javascript">window.onload = date_time('date_time');</script>
+    </body>
+</html>
